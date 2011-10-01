@@ -1,0 +1,5 @@
+Mach-O import table patching for function redirection.
+Read two articles at CodeProject to get more info on this:
+
+http://www.codeproject.com/KB/recipes/dynamic_linking-in-mach-o.aspx
+http://www.codeproject.com/KB/recipes/redirection-in-mach-o.aspx
