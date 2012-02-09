@@ -22,7 +22,7 @@ int main()
 
 	if (!dladdr((void const *)libtest, &info))  //gets an address of a library which contains libtest() function
     {
-        fprintf(stderr, "Failed to get the base address of a library!\n", LIBTEST_PATH);
+        fprintf(stderr, "Failed to get the base address of a library at `%s`!\n", LIBTEST_PATH);
 
         goto end;
     }
