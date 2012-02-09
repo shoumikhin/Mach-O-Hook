@@ -84,14 +84,14 @@ uint32_t read_head_offset(int descriptor)  //returns offset to the target mach-o
     if (MH_MAGIC == magic)  //if only one architecture
         return 0;
 
-    magic = NXSwapInt(magic);
+    magic = OSSwapInt32(magic);
 
     if (FAT_MAGIC == magic)  //if fat binary
     {
         if (sizeof(uint32_t) != read(descriptor, &nfat_arch, sizeof(uint32_t)))
             return ret;
 
-        nfat_arch = NXSwapInt(nfat_arch);
+        nfat_arch = OSSwapInt32(nfat_arch);
         fat_archs = (struct fat_arch const *)read_file(descriptor, sizeof(struct fat_header), nfat_arch * sizeof(struct fat_arch));
 
         if (!fat_archs)
@@ -100,11 +100,11 @@ uint32_t read_head_offset(int descriptor)  //returns offset to the target mach-o
         for (fat_arch_i = fat_archs, i = 0; i < nfat_arch; ++fat_arch_i, ++i)
         {
             cpu_type = fat_arch_i->cputype;
-            cpu_type = NXSwapInt(cpu_type);
+            cpu_type = OSSwapInt32(cpu_type);
 
 			if (CPU_TYPE_I386 == cpu_type)
 			{
-				ret = NXSwapInt(fat_arch_i->offset);
+				ret = OSSwapInt32(fat_arch_i->offset);
 
 				break;
 			}
