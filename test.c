@@ -3,8 +3,6 @@
 
 #include "mach_hook.h"
 
-#define LIBTEST_PATH "libtest.dylib"
-
 void libtest();  //from libtest.dylib
 
 int hooked_puts(char const *s)
@@ -20,14 +18,14 @@ int main()
     mach_substitution original;  //original data for restoration
 	Dl_info info;
 
-	if (!dladdr((void const *)libtest, &info))  //gets an address of a library which contains libtest() function
+	if (!dladdr((void const *)libtest, &info))  //gets an address and a path of a target library
     {
-        fprintf(stderr, "Failed to get the base address of a library at `%s`!\n", LIBTEST_PATH);
+        fprintf(stderr, "Failed to get the base address of a library at `%s`!\n", info.dli_fname);
 
         goto end;
     }
 
-    handle = mach_hook_init(LIBTEST_PATH, info.dli_fbase);
+    handle = mach_hook_init(info.dli_fname, info.dli_fbase);
 
     if (!handle)
     {
